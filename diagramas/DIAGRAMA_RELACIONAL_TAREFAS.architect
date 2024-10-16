@@ -4,7 +4,7 @@
  <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
  <project-data-sources>
   <data-source id="DS0">
-   <property key="Logical" value="PlayPen Database" />
+   <property key="Logical" value="(Target Database)" />
   </data-source>
  </project-data-sources>
  <source-databases>
@@ -48,7 +48,7 @@
     <column id="COL11" populated="true" UUID="7035c98c-b272-4ce2-a7aa-139f30d59767" autoIncrement="false" autoIncrementSequenceName="TAREFAS_data_conclusao_seq" defaultValue="" name="DATA_CONCLUSAO" nullable="1" physicalName="DATA_CONCLUSAO" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="93" userDefinedTypeUUID="6497d8de-0e00-40d6-a42e-e2adca83be64" >
      <remarks></remarks>
     </column>
-    <column id="COL12" populated="true" UUID="5f0c6bd9-000e-4e0a-bc80-44f4ea605dc4" autoIncrement="false" autoIncrementSequenceName="TAREFAS_status_seq" defaultValue="" name="STATUS" nullable="0" physicalName="STATUS" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="16" userDefinedTypeUUID="a26374aa-3026-4bb8-b564-eb2e186dfa5d" >
+    <column id="COL12" populated="true" UUID="5f0c6bd9-000e-4e0a-bc80-44f4ea605dc4" autoIncrement="false" autoIncrementSequenceName="TAREFAS_status_seq" defaultValue="" name="STATUS" nullable="0" physicalName="STATUS" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="2" userDefinedTypeUUID="115245ce-612c-4d6a-b559-6dd903dd959a" >
      <remarks></remarks>
     </column>
     <column id="COL13" populated="true" UUID="6a04d611-6aba-4aaa-9872-fdfb3f2a4835" autoIncrement="false" autoIncrementSequenceName="Usuarios_id_usuario_seq" defaultValue="" name="CPF" nullable="0" physicalName="CPF" precision="11" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
