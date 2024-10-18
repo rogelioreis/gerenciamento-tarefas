@@ -1,4 +1,4 @@
-from conexion.oracle_queries import OracleQueries
+from conexion.oracle_queries import OracleQueries # type: ignore
 
 def create_tables(query:str):
     list_of_commands = query.split(";")
@@ -29,24 +29,27 @@ def generate_records(query:str, sep:str=';'):
 
 def run():
 
-    with open("../sql/create_tables_pedidos.sql") as f:
+    # Arquivo SQL para criação das tabelas de usuários e tarefas
+    with open("../sql/create_tables_usuarios_tarefas.sql") as f:
         query_create = f.read()
 
     print("Creating tables...")
     create_tables(query=query_create)
     print("Tables successfully created!")
 
-    with open("../sql/inserting_samples_records.sql") as f:
+    # Arquivo SQL para inserir registros de usuários e tarefas
+    with open("../sql/inserting_samples_records_usuarios_tarefas.sql") as f:
         query_generate_records = f.read()
 
-    print("Gerenating records")
+    print("Generating records...")
     generate_records(query=query_generate_records)
     print("Records successfully generated!")
 
-    with open("../sql/inserting_samples_related_records.sql") as f:
+    # Arquivo SQL para inserir registros relacionados (usuários com tarefas associadas)
+    with open("../sql/inserting_samples_related_records_usuarios_tarefas.sql") as f:
         query_generate_related_records = f.read()
 
-    print("Gerenating records")
+    print("Generating related records...")
     generate_records(query=query_generate_related_records, sep='--')
     print("Records successfully generated!")
 
