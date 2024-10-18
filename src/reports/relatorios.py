@@ -1,28 +1,30 @@
-from conexion.oracle_queries import OracleQueries
+from conexion.oracle_queries import OracleQueries # type: ignore
 
-class Relatorio:
+class RelatorioUsuarioTarefa:
     def __init__(self):
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_pedidos.sql") as f:
-            self.query_relatorio_pedidos = f.read()
+        with open("sql/relatorio_usuarios.sql") as f:
+            self.query_relatorio_usuarios = f.read()
 
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_pedidos_por_fornecedor.sql") as f:
-            self.query_relatorio_pedidos_por_fornecedor = f.read()
+        with open("sql/relatorio_tarefas.sql") as f:
+            self.query_relatorio_tarefas = f.read()
 
-       
-    def get_relatorio_pedidos(self):
-        # Cria uma nova conexão com o banco que permite alteração
+        with open("sql/relatorio_usuarios_tarefas.sql") as f:
+            self.query_relatorio_usuarios_tarefas = f.read()
+
+    def get_relatorio_usuarios(self):
         oracle = OracleQueries()
         oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_pedidos))
-        input("Pressione Enter para Sair do Relatório de Pedidos")
+        print(oracle.sqlToDataFrame(self.query_relatorio_usuarios))
+        input("Pressione Enter para Sair do Relatório de Usuários")
 
     def get_relatorio_tarefas(self):
-        # Cria uma nova conexão com o banco que permite alteração
         oracle = OracleQueries()
         oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_pedidos_por_fornecedor))
-        input("Pressione Enter para Sair do Relatório de Fornecedores")
+        print(oracle.sqlToDataFrame(self.query_relatorio_tarefas))
+        input("Pressione Enter para Sair do Relatório de Tarefas")
+
+    def get_relatorio_usuarios_tarefas(self):
+        oracle = OracleQueries()
+        oracle.connect()
+        print(oracle.sqlToDataFrame(self.query_relatorio_usuarios_tarefas))
+        input("Pressione Enter para Sair do Relatório de Usuários e Tarefas")
