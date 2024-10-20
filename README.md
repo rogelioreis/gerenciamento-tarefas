@@ -25,5 +25,9 @@ python principal.py
 ```
 ### Testar conexão com o Banco:
 ```shell
-python test.by
+python test.py
+```
+### Para deletar as tabelas caso necessario:
+```shell
+python deletar_tabelas.py
 ```
