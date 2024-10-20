@@ -1,19 +1,25 @@
+from datetime import datetime
+from model.usuarios import Usuario  
+
 class Tarefa:
     def __init__(self, 
-                 codigo_tarefa: int = None, 
-                 titulo: str = None, 
-                 descricao: str = None, 
-                 data_criacao: str = None, 
-                 status: int = None, 
-                 cpf: str = None, 
-                 data_conclusao: str = None):
+                 codigo_tarefa: int = None,
+                 titulo: str = None,
+                 descricao: str = None,
+                 data_criacao: datetime = None,  # Mantemos data_criacao aqui
+                 data_conclusao: datetime = None,  # Data de conclusão opcional
+                 status: int = 0,  # 0 para pendente, 1 para concluída
+                 usuario: Usuario = None
+                 ):
         self.set_codigo_tarefa(codigo_tarefa)
         self.set_titulo(titulo)
         self.set_descricao(descricao)
-        self.set_data_criacao(data_criacao)
+        
+        # Se data_criacao não for fornecida, usamos agora o valor passado
+        self.set_data_criacao(data_criacao if data_criacao else datetime.now())
+        self.set_data_conclusao(data_conclusao)  # Pode ser None no início
         self.set_status(status)
-        self.set_cpf(cpf)
-        self.set_data_conclusao(data_conclusao)
+        self.set_usuario(usuario)
 
     def set_codigo_tarefa(self, codigo_tarefa: int):
         self.codigo_tarefa = codigo_tarefa
@@ -24,17 +30,19 @@ class Tarefa:
     def set_descricao(self, descricao: str):
         self.descricao = descricao
 
-    def set_data_criacao(self, data_criacao: str):
+    def set_data_criacao(self, data_criacao: datetime):
         self.data_criacao = data_criacao
 
-    def set_status(self, status: int):
-        self.status = status
-
-    def set_cpf(self, cpf: str):
-        self.cpf = cpf
-
-    def set_data_conclusao(self, data_conclusao: str):
+    def set_data_conclusao(self, data_conclusao: datetime):
         self.data_conclusao = data_conclusao
+
+    def set_status(self, status: int):
+        self.status = status  # 0: Pendente, 1: Concluída
+        if status == 1:  # Se a tarefa for concluída
+            self.set_data_conclusao(datetime.now())  # A data de conclusão é atualizada quando a tarefa é marcada como concluída
+
+    def set_usuario(self, usuario: Usuario):
+        self.usuario = usuario
 
     def get_codigo_tarefa(self) -> int:
         return self.codigo_tarefa
@@ -45,23 +53,23 @@ class Tarefa:
     def get_descricao(self) -> str:
         return self.descricao
 
-    def get_data_criacao(self) -> str:
+    def get_data_criacao(self) -> datetime:
         return self.data_criacao
+
+    def get_data_conclusao(self) -> datetime:
+        return self.data_conclusao
 
     def get_status(self) -> int:
         return self.status
 
-    def get_cpf(self) -> str:
-        return self.cpf
-
-    def get_data_conclusao(self) -> str:
-        return self.data_conclusao
+    def get_usuario(self) -> Usuario:
+        return self.usuario
 
     def to_string(self) -> str:
-        return (f"Código Tarefa: {self.get_codigo_tarefa()} | "
+        return (f"Tarefa: {self.get_codigo_tarefa()} | "
                 f"Título: {self.get_titulo()} | "
                 f"Descrição: {self.get_descricao()} | "
-                f"Data Criação: {self.get_data_criacao()} | "
-                f"Data Conclusão: {self.get_data_conclusao()} | "
-                f"Status: {self.get_status()} | "
-                f"CPF: {self.get_cpf()}")
+                f"Data de Criação: {self.get_data_criacao()} | "
+                f"Data de Conclusão: {self.get_data_conclusao().strftime('%Y-%m-%d %H:%M:%S') if self.get_data_conclusao() else 'N/A'} | "
+                f"Status: {'Concluída' if self.get_status() == 1 else 'Pendente'} | "
+                f"Usuário: {self.get_usuario().get_nome() if self.get_usuario() else 'N/A'}")

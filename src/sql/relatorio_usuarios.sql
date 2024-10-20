@@ -1,4 +1,4 @@
 SELECT U.CPF,
        U.NOME
        FROM USUARIOS U
-       ORDER BY U.NOME;
+       ORDER BY U.NOME

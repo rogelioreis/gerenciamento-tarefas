@@ -1,58 +1,66 @@
 from utils import config
-from utils.splash_screen import SplashScreen # type: ignore
+from utils.splash_screen import SplashScreen
+from reports.relatorios import RelatorioUsuariosTarefas
 from controller.controller_usuario import Controller_Usuario
-from controller.controller_tarefa import Controller_Tarefa # type: ignore
+from controller.controller_tarefa import Controller_Tarefa
+from conexion.oracle_queries import OracleQueries
 
 # Inicializa as classes
-tela_inicial = SplashScreen()
+oracle = OracleQueries(can_write=True)
+oracle.connect()
+tela_inicial = SplashScreen(oracle)
+relatorio = RelatorioUsuariosTarefas()
 ctrl_usuario = Controller_Usuario()
 ctrl_tarefa = Controller_Tarefa()
 
 # Funções para relatórios
-def reports(opcao_relatorio:int=0):
+def relatorios(opcao_relatorio: int = 0):
     if opcao_relatorio == 1:
         print("Relatório de Usuários")
-        # Implemente a lógica para mostrar relatório de usuários
+        relatorio.get_relatorio_usuarios()
     elif opcao_relatorio == 2:
         print("Relatório de Tarefas")
-        # Implemente a lógica para mostrar relatório de tarefas
+        relatorio.get_relatorio_tarefas()
+    elif opcao_relatorio == 3:
+        print("Relatório de Tarefas Concluídas")
+        relatorio.get_relatorio_tarefas_concluidas()
 
 # Funções para inserir dados
-def inserir(opcao_inserir:int=0):
+def inserir(opcao_inserir: int = 0):
     if opcao_inserir == 1:
         ctrl_usuario.inserir_usuario()
     elif opcao_inserir == 2:
         ctrl_tarefa.inserir_tarefa()
 
 # Funções para atualizar dados
-def atualizar(opcao_atualizar:int=0):
+def atualizar(opcao_atualizar: int = 0):
     if opcao_atualizar == 1:
         ctrl_usuario.atualizar_usuario()
     elif opcao_atualizar == 2:
         ctrl_tarefa.atualizar_tarefa()
 
 # Funções para excluir dados
-def excluir(opcao_excluir:int=0):
+def excluir(opcao_excluir: int = 0):
     if opcao_excluir == 1:
         ctrl_usuario.excluir_usuario()
     elif opcao_excluir == 2:
         ctrl_tarefa.excluir_tarefa()
 
 # Função principal
-def run():
-    print(tela_inicial.get_updated_screen())
-    config.clear_console()
-
+def run():  
     while True:
+        print(tela_inicial.exibir())
+        config.clear_console()
+
         print(config.MENU_PRINCIPAL)
         opcao = int(input("Escolha uma opção [1-5]: "))
         config.clear_console(1)
         
         if opcao == 1:  # Relatórios
             print(config.MENU_RELATORIOS)
-            opcao_relatorio = int(input("Escolha uma opção [0-2]: "))
+            opcao_relatorio = int(input("Escolha uma opção [0-3]: "))
             config.clear_console(1)
-            reports(opcao_relatorio)
+            relatorios(opcao_relatorio)
             config.clear_console(1)
 
         elif opcao == 2:  # Inserir Novos Registros
@@ -77,7 +85,8 @@ def run():
             config.clear_console()
 
         elif opcao == 5:  # Sair
-            print(tela_inicial.get_updated_screen())
+            print(tela_inicial.exibir())
+            config.clear_console()
             print("Obrigado por utilizar o nosso sistema.")
             exit(0)
 
