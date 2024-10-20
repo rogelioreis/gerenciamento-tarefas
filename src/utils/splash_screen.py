@@ -1,4 +1,3 @@
-import time
 from conexion.oracle_queries import OracleQueries
 
 class SplashScreen:
@@ -8,12 +7,12 @@ class SplashScreen:
     def contar_usuarios(self):
         query = "SELECT COUNT(1) AS total_usuarios FROM USUARIOS"
         result = self.oracle_queries.sqlToMatrix(query)
-        return result[0][0][0]  # O primeiro elemento contém o total de usuários
+        return result[0][0][0]  
 
     def contar_tarefas(self):
         query = "SELECT COUNT(1) AS total_tarefas FROM TAREFAS"
         result = self.oracle_queries.sqlToMatrix(query)
-        return result[0][0][0]  # O primeiro elemento contém o total de tarefas
+        return result[0][0][0]  
 
     def exibir(self):
         usuarios = self.contar_usuarios()
@@ -40,14 +39,11 @@ class SplashScreen:
         print("#  PROFESSOR: HOWARD ROATTI                   #")
         print("#                                             #")
         print("###############################################")
-        
-        # Pausa de 5 segundos para exibir a splash screen
-        time.sleep(1)
 
-# Exemplo de chamada no início do programa
+
 if __name__ == "__main__":
     oracle_queries = OracleQueries()
-    oracle_queries.connect()  # Conectar ao banco de dados Oracle
-    splash_screen = SplashScreen(oracle_queries)  # Criar uma instância de SplashScreen
-    splash_screen.exibir()  # Exibir a splash screen com os dados dinâmicos
-    oracle_queries.close()  # Fechar a conexão ao banco de dados
+    oracle_queries.connect()  
+    splash_screen = SplashScreen(oracle_queries)  
+    splash_screen.exibir()  
+    oracle_queries.close()  

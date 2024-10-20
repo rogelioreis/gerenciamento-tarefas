@@ -6,18 +6,16 @@ class Tarefa:
                  codigo_tarefa: int = None,
                  titulo: str = None,
                  descricao: str = None,
-                 data_criacao: datetime = None,  # Mantemos data_criacao aqui
-                 data_conclusao: datetime = None,  # Data de conclusão opcional
+                 data_criacao: datetime = None,
+                 data_conclusao: datetime = None,
                  status: int = 0,  # 0 para pendente, 1 para concluída
                  usuario: Usuario = None
                  ):
         self.set_codigo_tarefa(codigo_tarefa)
         self.set_titulo(titulo)
         self.set_descricao(descricao)
-        
-        # Se data_criacao não for fornecida, usamos agora o valor passado
-        self.set_data_criacao(data_criacao if data_criacao else datetime.now())
-        self.set_data_conclusao(data_conclusao)  # Pode ser None no início
+        self.set_data_criacao(data_criacao or datetime.now())
+        self.set_data_conclusao(data_conclusao)
         self.set_status(status)
         self.set_usuario(usuario)
 
@@ -37,9 +35,9 @@ class Tarefa:
         self.data_conclusao = data_conclusao
 
     def set_status(self, status: int):
-        self.status = status  # 0: Pendente, 1: Concluída
-        if status == 1:  # Se a tarefa for concluída
-            self.set_data_conclusao(datetime.now())  # A data de conclusão é atualizada quando a tarefa é marcada como concluída
+        self.status = status  
+        if status == 1:  
+            self.set_data_conclusao(datetime.now())
 
     def set_usuario(self, usuario: Usuario):
         self.usuario = usuario

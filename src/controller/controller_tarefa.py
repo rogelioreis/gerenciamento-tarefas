@@ -9,12 +9,9 @@ class Controller_Tarefa:
         self.ctrl_usuario = Controller_Usuario()
 
     def inserir_tarefa(self) -> Tarefa:
-        ''' Insere uma nova tarefa no banco de dados. '''
-        
-        # Cria uma nova conexão com o banco
         oracle = OracleQueries()
         
-        # Lista os usuários existentes para inserir na tarefa
+        # Lista os usuários
         self.listar_usuarios(oracle, need_connect=True)
         usuario_cpf = str(input("Digite o CPF do Usuário responsável pela tarefa: "))
         usuario = self.valida_usuario(oracle, usuario_cpf)
@@ -25,7 +22,7 @@ class Controller_Tarefa:
         descricao = str(input("Digite a descrição da tarefa: "))
         data_criacao = datetime.now()
 
-        # Recupera o cursor para executar um bloco PL/SQL anônimo
+        # Recupera o cursor para executar um bloco PL/SQL 
         cursor = oracle.connect()
         # Cria a variável de saída com o tipo especificado
         output_value = cursor.var(int)
@@ -41,57 +38,50 @@ class Controller_Tarefa:
         end;
         """, data)
         
-        # Recupera o código da nova tarefa
         codigo_tarefa = output_value.getvalue()
-        # Persiste (confirma) as alterações
+
+        # Confirma as alterações
         oracle.conn.commit()
-        
-        # Recupera os dados da nova tarefa criada transformando em um DataFrame
+
         df_tarefa = oracle.sqlToDataFrame(f"select codigo_tarefa, titulo, descricao, data_criacao from tarefas where codigo_tarefa = {codigo_tarefa}")
-        
 
         nova_tarefa = Tarefa(
             codigo_tarefa=df_tarefa.codigo_tarefa.values[0],
             titulo=df_tarefa.titulo[0],
             descricao=df_tarefa.descricao.values[0],
-            data_criacao=df_tarefa.data_criacao.values[0],  # Atribuição direta
+            data_criacao=df_tarefa.data_criacao.values[0],
             usuario=usuario
         )
         
-        # Exibe os atributos da nova tarefa
         print(nova_tarefa.to_string())
         
-        # Retorna o objeto nova_tarefa para utilização posterior, caso necessário
         return nova_tarefa
 
     def atualizar_tarefa(self) -> Tarefa:
-        # Cria uma nova conexão com o banco que permite alteração
         oracle = OracleQueries(can_write=True)
         oracle.connect()
 
         self.listar_tarefas(oracle)
-        # Solicita ao usuário o código da tarefa a ser alterada
+
         codigo_tarefa = int(input("Código da Tarefa que irá alterar: "))        
 
-        # Verifica se a tarefa existe na base de dados
+        # Verifica se a tarefa existe
         if self.verifica_existencia_tarefa(oracle, codigo_tarefa):
 
-            # Recupera os dados da tarefa antes de tentar atualizar
             df_tarefa = oracle.sqlToDataFrame(f"select codigo_tarefa, titulo, descricao, data_criacao, status from tarefas where codigo_tarefa = {codigo_tarefa}")
 
-            # Cria um novo objeto Tarefa
             tarefa_atual = Tarefa(
                 codigo_tarefa=df_tarefa.codigo_tarefa.values[0],
                 titulo=df_tarefa.titulo[0],
                 descricao=df_tarefa.descricao.values[0],
                 data_criacao=df_tarefa.data_criacao.values[0],
-                status=df_tarefa.status.values[0],  # Adiciona o status aqui
+                status=df_tarefa.status.values[0],
             )
 
             # Verifica se a tarefa está concluída
-            if tarefa_atual.get_status() == 1:  # Supondo que 1 representa concluído
+            if tarefa_atual.get_status() == 1:
                 print("Não é possível atualizar uma tarefa que já foi concluída.")
-                return None  # Retorna sem fazer a atualização
+                return None  
 
             print("1 - Alterar dados")
             print("2 - Concluir tarefa")
@@ -114,55 +104,45 @@ class Controller_Tarefa:
                 data_criacao = datetime.now()
                 data_criacao_str = data_criacao.strftime('%Y-%m-%d %H:%M:%S')
 
-                # Atualiza a descrição da tarefa existente
+                # Atualiza a descrição
                 oracle.write(f"update tarefas set titulo = '{novo_titulo}', descricao = '{nova_descricao}', data_criacao = to_date('{data_criacao_str}', 'yyyy-mm-dd hh24:mi:ss'), cpf = '{usuario.get_CPF()}' where codigo_tarefa = {codigo_tarefa}")
-                
-                # Recupera os dados da tarefa atualizada transformando em um DataFrame
+
                 df_tarefa = oracle.sqlToDataFrame(f"select codigo_tarefa, titulo, descricao, data_criacao from tarefas where codigo_tarefa = {codigo_tarefa}")
                 
-                # Cria um novo objeto Tarefa
                 tarefa_atualizada = Tarefa(
                     codigo_tarefa=df_tarefa.codigo_tarefa.values[0],
                     titulo=df_tarefa.titulo[0],
                     descricao=df_tarefa.descricao.values[0],
-                    data_criacao=df_tarefa.data_criacao.values[0],  # Atribuição direta
+                    data_criacao=df_tarefa.data_criacao.values[0],
                     usuario=usuario
                 )
 
-                # Exibe os atributos da tarefa atualizada
                 print(tarefa_atualizada.to_string())
                 
-                # Retorna o objeto tarefa_atualizada para utilização posterior, caso necessário
                 return tarefa_atualizada
             
-            # Exemplo de uso da tarefa no seu controller
             elif escolha == 2:
-                # Definindo a data de conclusão
                 data_conclusao = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 
                 # Atualizando o status da tarefa para 'concluída' e registrando a data de conclusão
                 oracle.write(f"update tarefas set status = 1, data_conclusao = to_timestamp('{data_conclusao}', 'yyyy-mm-dd hh24:mi:ss') where codigo_tarefa = {codigo_tarefa}")
                 
-                # Recuperando os dados da tarefa concluída para exibir (incluindo descricao e data_criacao)
                 df_tarefa = oracle.sqlToDataFrame(f"select codigo_tarefa, titulo, descricao, data_criacao, data_conclusao, cpf from tarefas where codigo_tarefa = {codigo_tarefa}")
 
                 usuario_cpf = df_tarefa.cpf.values[0]
                 usuario = self.valida_usuario(oracle, usuario_cpf)
 
-                # Cria um novo objeto Tarefa com os dados necessários
                 tarefa_atualizada = Tarefa(
                     codigo_tarefa=df_tarefa.codigo_tarefa.values[0],
                     titulo=df_tarefa.titulo.values[0],
                     descricao=df_tarefa.descricao.values[0],
                     data_criacao=df_tarefa.data_criacao.values[0],
-                    status=1,  # Status concluído
+                    status=1,
                     usuario=usuario
                 )
 
-                # Exibe os atributos da tarefa atualizada
                 print(tarefa_atualizada.to_string())
                 
-                # Retorna o objeto tarefa_atualizada para utilização posterior, caso necessário
                 return tarefa_atualizada
 
             else:
@@ -172,26 +152,24 @@ class Controller_Tarefa:
             return None
 
     def excluir_tarefa(self):
-        # Cria uma nova conexão com o banco que permite alteração
         oracle = OracleQueries(can_write=True)
         oracle.connect()
 
         self.listar_tarefas(oracle)
-        # Solicita ao usuário o código da tarefa a ser excluída
+
         codigo_tarefa = int(input("Código da Tarefa que irá excluir: "))        
 
-        # Verifica se a tarefa existe na base de dados
+        # Verifica se a tarefa existe
         if self.verifica_existencia_tarefa(oracle, codigo_tarefa):
             opcao_excluir = input(f"Tem certeza que deseja excluir a tarefa {codigo_tarefa} [S ou N]: ")
             if opcao_excluir.lower() == "s":
-                # Remove a tarefa da tabela
+                # Remove a tarefa
                 oracle.write(f"delete from tarefas where codigo_tarefa = {codigo_tarefa}")
                 print("Tarefa removida com sucesso!")
         else:
             print(f"O código {codigo_tarefa} não existe.")
 
     def verifica_existencia_tarefa(self, oracle: OracleQueries, codigo: int) -> bool:
-        # Recupera os dados da tarefa criada transformando em um DataFrame
         df_tarefa = oracle.sqlToDataFrame(f"select codigo_tarefa from tarefas where codigo_tarefa = {codigo}")
         return not df_tarefa.empty
 
@@ -232,8 +210,6 @@ class Controller_Tarefa:
             return None
         else:
             oracle.connect()
-            # Recupera os dados do novo usuário criado transformando em um DataFrame
             df_usuario = oracle.sqlToDataFrame(f"select cpf, nome from usuarios where cpf = {usuario_cpf}")
-            # Cria um novo objeto usuario
             usuario = Usuario(df_usuario.cpf.values[0], df_usuario.nome.values[0])
             return usuario

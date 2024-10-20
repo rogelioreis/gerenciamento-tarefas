@@ -1,6 +1,8 @@
-def clear_console(lines=100):
-    """Limpa o console."""
-    print("\n" * lines)
+def clear_console(wait_time:int=4):
+    import os
+    from time import sleep
+    sleep(wait_time)
+    os.system("clear")
 
 # Mensagens de menu
 MENU_PRINCIPAL = """
