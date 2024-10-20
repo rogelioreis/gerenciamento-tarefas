@@ -19,7 +19,7 @@ cd /caminho/para/projetos/src
 ```shell
 python criar_tabelas_tarefas.py
 ```
-#### 5 - Depois de concluido, Execute o codigo principal:
+#### 5 - Depois de concluído execute o codigo principal:
 ```shell
 python principal.py
 ```
