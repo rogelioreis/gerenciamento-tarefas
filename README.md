@@ -9,3 +9,7 @@
 - Jordhan Fernandes de Assis
 - Mariana Lopes Ferreira
 - Murilo da Silva Soares
+
+### Comando para rodar o principal.py
+### PYTHONPATH=. python3 -m utils.principal
+### Para rodar precisa caminhar até a pasta src e executar esse codigo la
