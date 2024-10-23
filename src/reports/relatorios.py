@@ -11,6 +11,9 @@ class RelatorioUsuariosTarefas:
         with open("sql/relatorio_tarefas_concluidas.sql") as f:
             self.query_relatorio_tarefas_concluidas = f.read()
 
+        with open("sql/relatorio_tarefas_por_usuario.sql") as f:
+            self.query_relatorio_tarefas_por_usuario = f.read()
+
     def get_relatorio_usuarios(self):
         oracle = OracleQueries()
         oracle.connect()
@@ -28,3 +31,9 @@ class RelatorioUsuariosTarefas:
         oracle.connect()
         print(oracle.sqlToDataFrame(self.query_relatorio_tarefas_concluidas))
         input("Pressione Enter para Sair do Relatório de Tarefas Concluidas")
+
+    def get_relatorio_tarefas_por_usuario(self):
+        oracle = OracleQueries()
+        oracle.connect()
+        print(oracle.sqlToDataFrame(self.query_relatorio_tarefas_por_usuario))
+        input("Pressione Enter para Sair do Relatório de Qtde Tarefas por Usuario")

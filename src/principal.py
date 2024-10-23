@@ -24,6 +24,9 @@ def relatorios(opcao_relatorio: int = 0):
     elif opcao_relatorio == 3:
         print("Relatório de Tarefas Concluídas")
         relatorio.get_relatorio_tarefas_concluidas()
+    elif opcao_relatorio == 4:
+        print("Relatório de Qtde Tarefas por Usuario")
+        relatorio.get_relatorio_tarefas_por_usuario()
 
 # Inserir
 def inserir(opcao_inserir: int = 0):
@@ -32,6 +35,10 @@ def inserir(opcao_inserir: int = 0):
     elif opcao_inserir == 2:
         ctrl_tarefa.inserir_tarefa()
 
+    if(config.novamente()):
+        inserir(opcao_inserir)
+
+
 # Atualizar
 def atualizar(opcao_atualizar: int = 0):
     if opcao_atualizar == 1:
@@ -39,12 +46,18 @@ def atualizar(opcao_atualizar: int = 0):
     elif opcao_atualizar == 2:
         ctrl_tarefa.atualizar_tarefa()
 
+    if(config.novamente()):
+        atualizar(opcao_atualizar)
+
 # Excluir
 def excluir(opcao_excluir: int = 0):
     if opcao_excluir == 1:
         ctrl_usuario.excluir_usuario()
     elif opcao_excluir == 2:
         ctrl_tarefa.excluir_tarefa()
+    
+    if(config.novamente()):
+        excluir(opcao_excluir)
 
 # Principal
 def run():  
@@ -58,7 +71,7 @@ def run():
         
         if opcao == 1:  # Relatórios
             print(config.MENU_RELATORIOS)
-            opcao_relatorio = int(input("Escolha uma opção [0-3]: "))
+            opcao_relatorio = int(input("Escolha uma opção [0-4]: "))
             config.clear_console(1)
             relatorios(opcao_relatorio)
             config.clear_console(1)

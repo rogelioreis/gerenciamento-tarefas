@@ -60,11 +60,13 @@ class Controller_Usuario:
                 print(f"O usuário com CPF {cpf} não pode ser excluído porque está vinculado a uma ou mais tarefas!")
             else:
                 df_usuario = oracle.sqlToDataFrame(f"select cpf, nome from usuarios where cpf = '{cpf}'")
-                # Remove o usuário da tabela
-                oracle.write(f"delete from usuarios where cpf = '{cpf}'")
-                usuario_excluido = Usuario(df_usuario.cpf.values[0], df_usuario.nome.values[0])
-                print("Usuário Removido com Sucesso!")
-                print(usuario_excluido.to_string())
+                opcao_excluir = input(f"Tem certeza que deseja excluir o usuario {cpf} [S ou N]: ")
+                if opcao_excluir.lower() == "s":
+                    # Remove o usuário da tabela
+                    oracle.write(f"delete from usuarios where cpf = '{cpf}'")
+                    usuario_excluido = Usuario(df_usuario.cpf.values[0], df_usuario.nome.values[0])
+                    print("Usuário Removido com Sucesso!")
+                    print(usuario_excluido.to_string())
         else:
             print(f"O CPF {cpf} não existe.")
 
