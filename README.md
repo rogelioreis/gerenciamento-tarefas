@@ -10,16 +10,17 @@
 - Mariana Lopes Ferreira
 - Murilo da Silva Soares
 
-### Passo a passo para rodar o programa
+### Passo a passo para rodar o programa no sistema linux
 #### 3 - No terminal, caminhe até a pasta "src" do programa. Ex:
 ```shell
-cd /caminho/para/projetos/src
+cd /caminho/para/projetos/gerenciamento-tarefas/src
 ```
-#### 4 - Execute o codigo:
+
+#### 4 - O sistema exige que tabelas existam. Para criar as tabelas e registros execute o codigo:
 ```shell
 python criar_tabelas_tarefas.py
 ```
-#### 5 - Depois de concluído execute o codigo principal:
+#### 5 - Para executar o programa execute o codigo do programa principal:
 ```shell
 python principal.py
 ```
