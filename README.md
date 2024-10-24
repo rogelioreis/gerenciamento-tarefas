@@ -18,7 +18,7 @@ cd /caminho/para/projetos/gerenciamento-tarefas/src
 
 #### 4 - O sistema exige que tabelas existam. Para criar as tabelas e registros execute o codigo:
 ```shell
-python criar_tabelas_tarefas.py
+python criar_tabelas_e_registros.py
 ```
 #### 5 - Para executar o programa execute o codigo do programa principal:
 ```shell
