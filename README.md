@@ -32,3 +32,8 @@ python test.py
 ```shell
 python deletar_tabelas.py
 ```
+
+## Link video explicativo:
+```shell
+https://www.youtube.com/watch?v=s4mJg1oIwI0
+```
