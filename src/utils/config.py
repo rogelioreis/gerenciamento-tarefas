@@ -30,7 +30,7 @@ Escolha uma opção de entidade:
 """
 
 def novamente() -> bool :
-    clear_console(1)
+    clear_console(3)
     opcao_novamente = input("Deseja fazer novamente [S ou N]: ")
     if opcao_novamente.lower() == "s":
         clear_console(1)
